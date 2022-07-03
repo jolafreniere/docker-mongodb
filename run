@@ -1,0 +1,3 @@
+#!/bin/bash
+docker rm api_container
+docker compose up
