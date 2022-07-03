@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 
-mongoose.connect("mongodb://localhost/example_db")
+mongoose.connect("mongodb://docker-mongodb-database-1:27017")
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Mongo Connection Error"))

@@ -1,12 +1,15 @@
 version: '3.9'
 
 services:
-  mongo_db:
-    container_name: db_container
+  database:
     image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
     restart: always
     ports:
-      - "27017:27017"
+      - 27017:27017
     volumes:
       - mongo_db:/data/db
   api:
@@ -14,12 +17,7 @@ services:
     build: .
     ports:
       - 3000:3000
-    environment:
-      PORT: 3000
-      MONGODB_URI: mongodb://db_container:27017
-      DB_NAME: example_db
-      NAME: TEST
     depends_on:
-      - mongo_db
+      - database
 volumes:
   mongo_db: {}
