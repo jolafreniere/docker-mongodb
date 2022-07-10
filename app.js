@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 //const Database = require("./Utils/Database/Database")
 const User = require("./Models/User.js")
 const Post = require("./Models/Post.js")
+const Comment = require("./Models/Comment.js")
 const {faker} = require('@faker-js/faker')
 const crypto = require('crypto');
 const LoremIpsum = require('lorem-ipsum').LoremIpsum;
@@ -27,6 +28,7 @@ async function main(){
     console.log("Purging old data...");
     await User.deleteMany({});
     await Post.deleteMany({});
+    await Comment.deleteMany({});
     console.log("Generating fake data...");
     await createFakeUsers(5);
     await User.updateMany({}, {$set: {admin: false}});
@@ -55,10 +57,35 @@ async function createFakeUser(){
     console.log("Created User ...%s", newUser._id.toString().substring(newUser._id.toString().length - 5));
     for(let i = 0; i < Math.floor(Math.random() * (13 - 3 + 1)) + 3; i++){
         let post = await createFakePost(newUser);
-        console.log("Created Post %s", post._id);
+        console.log("\tCreated Post %s", post._id);
+        for(let j = 0; j < Math.floor(Math.random() * (17 - 4 + 1)) + 4; j++){
+            await createFakeComment(post, await getRandomUser());
+        }
     }
 
     return newUser._id;
+}
+
+async function getRandomUser(){
+    let users = await User.find({});
+    return users[Math.floor(Math.random() * users.length)];
+}
+
+async function createFakeComment(post, user){
+    let text = lorem.generateParagraphs(Math.floor(Math.random() * (4 - 1 + 1)) + 1);
+    let comment = new Comment({
+        commentText: text,
+        date: new Date()});
+    comment.author = user._id;
+    comment.post = post._id;
+    console.log("\t\tCreated Comment %s by user %s on post %s", trimUid(comment._id), user.username, trimUid(post._id));
+    await comment.save();
+    console.log("Comment text: %s", comment.commentText);
+    return comment;
+}
+
+function trimUid(uid){
+    return uid.toString().substring(uid.toString().length - 5);
 }
 
 async function createFakePost(user){
