@@ -80,7 +80,6 @@ async function createFakeComment(post, user){
     comment.post = post._id;
     console.log("\t\tCreated Comment %s by user %s on post %s", trimUid(comment._id), user.username, trimUid(post._id));
     await comment.save();
-    console.log("Comment text: %s", comment.commentText);
     return comment;
 }
 
