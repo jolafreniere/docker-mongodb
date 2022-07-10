@@ -22,15 +22,6 @@ module.exports = {
             admin: true
         });
         newUser.save();
-
-        // for(let i = 0; i < 5; i++){
-        //     console.log("User %i", i)
-        //     let userObject = generateFakeUser();
-        //     let user = new userModel(userObject);
-        //     console.log(user._id);
-        //     await user.save();
-        //     console.log("Added user ${user.username}");
-        // }
     }
 
 }
