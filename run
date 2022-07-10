@@ -1,4 +1,5 @@
 #!/bin/bash
 docker rm api_container
 docker rm docker-mongodb-database-1
+docker image rm --force docker-mongodb_api
 docker compose up
