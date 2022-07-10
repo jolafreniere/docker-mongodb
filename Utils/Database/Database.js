@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-console.log(process.cwd());
 const {faker} = require('@faker-js/faker')
 
 module.exports = {
